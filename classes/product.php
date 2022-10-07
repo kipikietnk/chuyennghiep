@@ -170,7 +170,12 @@ class product
 			return $alert;
 		}
 	}
-	
+	public function getproductbyId($id)
+	{
+		$query = "SELECT * FROM tbl_product where productId = '$id'";
+		$result = $this->db->select($query);
+		return $result;
+	}
 
 }
 ?>
