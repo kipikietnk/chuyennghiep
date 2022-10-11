@@ -14,7 +14,11 @@ spl_autoload_register(function ($class) {
 
 $db = new Database();
 $fm = new Format();
+// $ct = new cart();
+$br = new brand();
+$cat = new category();
 $cs = new customer();
+$product = new product();
 
 
 ?>
@@ -77,10 +81,16 @@ header("Cache-Control: max-age=2592000");
 							<span class="no_product">
 
 								<?php
-								
-									echo 'Trống';
-								
+								// $check_cart = $ct->check_cart();
+								// if ($check_cart) {
+								// 	// $sum = Session::get("sum"); $fm->format_currency($sum).' '.'đ'.
+								// 	$qty = Session::get("qty");
+								// 	echo ' SL:' . $qty;
+								// } else {
+								// 	echo 'Trống';
+								// }
 								?>
+								Trống
 							</span>
 						</a>
 					</div>
@@ -118,10 +128,18 @@ header("Cache-Control: max-age=2592000");
 									Danh mục sản phẩm
 									<span class="caret"></span></a>
 								<ul class="dropdown-menu">
-									<li>Các danh mục</li>
-									<li>Các danh mục</li>
-									<li>Các danh mục</li>
-									<li>Các danh mục</li>
+									<?php
+									$cate = $cat->show_category();
+									if ($cate) {
+										while ($result_new = $cate->fetch_assoc()) {
+									?>
+											<li>
+												<a href="productbycat.php?catid=<?php echo $result_new['catId'] ?>"><?php echo $result_new['catName'] ?></a>
+											</li>
+									<?php
+										}
+									}
+									?>
 								</ul>
 							</li>
 							<li class="dropdown">
@@ -129,10 +147,19 @@ header("Cache-Control: max-age=2592000");
 									Thương hiệu
 									<span class="caret"></span></a>
 								<ul class="dropdown-menu">
-									<li>Các danh mục</li>
-									<li>Các danh mục</li>
-									<li>Các danh mục</li>
-									<li>Các thương hiệu</li>
+									<?php
+									$brand = $br->show_brand_home();
+									if ($brand) {
+										while ($result_new = $brand->fetch_assoc()) {
+
+									?>
+											<li>
+												<a href="topbrands.php?brandid=<?php echo $result_new['brandId'] ?>"><?php echo $result_new['brandName'] ?></a>
+											</li>
+									<?php
+										}
+									}
+									?>
 								</ul>
 							</li>
 							<li><a href="cart.php">Giỏ hàng</a></li>
