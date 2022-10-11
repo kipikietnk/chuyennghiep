@@ -14,7 +14,7 @@ spl_autoload_register(function ($class) {
 
 $db = new Database();
 $fm = new Format();
-// $ct = new cart();
+$ct = new cart();
 $br = new brand();
 $cat = new category();
 $cs = new customer();
@@ -31,7 +31,7 @@ header("Cache-Control: max-age=2592000");
 <!DOCTYPE HTML>
 
 <head>
-	<title>Shop KLTT</title>
+	<title>Shop KQT</title>
 	<meta http-equiv="charset=utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 	<link href="css/style.css" rel="stylesheet" type="text/css" media="all" />
