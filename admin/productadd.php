@@ -1,6 +1,8 @@
 ﻿<?php include 'inc/header.php'; ?>
 <?php include 'inc/sidebar.php'; ?>
 <?php include '../classes/product.php'; ?>
+<?php include '../classes/brand.php'; ?>
+<?php include '../classes/category.php'; ?>
 <?php
 $pd = new product();
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
@@ -33,11 +35,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
                             <label>Danh mục</label>
                         </td>
                         <td>
-                            <select name="select" id="">
-                        <option value="1">thuong hieu 1</option>
-                                <option value="1">thuong hieu 2</option>
-                                <option value="1">thuong hieu 3</option>
-                                </select>
+                        <select id="select" name="category">
+                                <option>--------Chọn danh mục--------</option>
+                                <?php
+                                $cat = new category();
+                                $catlist = $cat->show_category();
+
+                                if ($catlist) {
+                                    while ($result = $catlist->fetch_assoc()) {
+                                ?>
+                                        <option value="<?php echo $result['catId'] ?>"><?php echo $result['catName'] ?></option>
+                                <?php
+                                    }
+                                }
+                                ?>
+                            </select>
                         </td>
                     </tr>
                     <tr>
@@ -45,10 +57,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
                             <label>Thương hiệu</label>
                         </td>
                         <td>
-                            <select id="select" name="brand">
-                                <option value="1">danh muc 1</option>
-                                <option value="1">danh muc 2</option>
-                                <option value="1">danh muc 3</option>
+                        <select id="select" name="brand">
+                                <option>--------Chọn thương hiệu-------</option>
+                                <?php
+                                $brand = new brand();
+                                $brandlist = $brand->show_brand();
+
+                                if ($brandlist) {
+                                    while ($result = $brandlist->fetch_assoc()) {
+                                ?>
+                                        <option value="<?php echo $result['brandId'] ?>"><?php echo $result['brandName'] ?></option>
+                                <?php
+                                    }
+                                }
+                                ?>
                             </select>
                         </td>
                     </tr>
