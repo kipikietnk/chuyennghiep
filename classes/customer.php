@@ -18,7 +18,13 @@ class customer
 		$this->db = new Database();
 		$this->fm = new Format();
 	}
-	
+	public function show_customers($id)
+	{
+		$query = "SELECT * FROM tbl_customer WHERE id='$id'";
+		$result = $this->db->select($query);
+		return $result;
+	}
+
 	public function insert_customers($data)
 	{
 		$name = mysqli_real_escape_string($this->db->link, $data['name']);
