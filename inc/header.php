@@ -64,7 +64,7 @@ header("Cache-Control: max-age=2592000");
 		<div class="header_top">
 			<div class="logo">
 				<a href="index.php">
-					<img src="/admin/uploads/logo.png" alt="" />
+					<img src="/admin/uploads/qrcode.png" alt="logo" />
 				</a>
 			</div>
 			<div class="header_top_right">
