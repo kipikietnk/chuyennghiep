@@ -24,7 +24,28 @@ class customer
 		$result = $this->db->select($query);
 		return $result;
 	}
+	public function update_customers($data, $id)
+	{
+		$name = mysqli_real_escape_string($this->db->link, $data['name']);
+		$email = mysqli_real_escape_string($this->db->link, $data['email']);
+		$address = mysqli_real_escape_string($this->db->link, $data['address']);
+		$phone = mysqli_real_escape_string($this->db->link, $data['phone']);
 
+		if ($name == "" || $email == "" || $address == "" || $phone == "") {
+			$alert = "<span class='error'>Không thể bỏ trống</span>";
+			return $alert;
+		} else {
+			$query = "UPDATE tbl_customer SET name='$name',email='$email',address='$address',phone='$phone' WHERE id ='$id'";
+			$result = $this->db->insert($query);
+			if ($result) {
+				$alert = "<span class='success'>Cập nhật thông tin thành công</span>";
+				return $alert;
+			} else {
+				$alert = "<span class='error'>Cập nhật không thành công</span>";
+				return $alert;
+			}
+		}
+	}
 	public function insert_customers($data)
 	{
 		$name = mysqli_real_escape_string($this->db->link, $data['name']);
@@ -76,6 +97,28 @@ class customer
 				$alert = "<span class='error'>Email hoặc mật khẩu không đúng</span>";
 				return $alert;
 			}
+		}
+	}
+	public function change_pass($id, $oldpass, $newpass)
+	{
+		$oldpass =  mysqli_real_escape_string($this->db->link, md5($oldpass));
+		$newpass =  mysqli_real_escape_string($this->db->link, md5($newpass));
+
+		$checkoldpass = "SELECT * FROM tbl_customer WHERE id = '$id' AND password = '$oldpass'";
+		$checkresult = $this->db->select($checkoldpass);
+		if ($checkresult) {
+			$query = "UPDATE tbl_customer SET password = '$newpass' WHERE id ='$id'";
+			$result = $this->db->update($query);
+			if ($result) {
+				$alert = "<span class='success'>Đổi mật khẩu thành công</span>";
+				return $alert;
+			} else {
+				$alert = "<span class='error'>Đổi mật khẩu không thành công</span>";
+				return $alert;
+			}
+		} else {
+			$alert = "<span class='error'>Mật khẩu cũ không đúng</span>";
+			return $alert;
 		}
 	}
 	
