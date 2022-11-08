@@ -31,7 +31,7 @@ header("Cache-Control: max-age=2592000");
 <!DOCTYPE HTML>
 
 <head>
-	<title>Shop KQT</title>
+	<title>Shop KLTT</title>
 	<meta http-equiv="charset=utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 	<link href="css/style.css" rel="stylesheet" type="text/css" media="all" />
@@ -64,7 +64,7 @@ header("Cache-Control: max-age=2592000");
 		<div class="header_top">
 			<div class="logo">
 				<a href="index.php">
-					<img src="/admin/uploads/qrcode.png" alt="logo" />
+					<img src="/admin/uploads/logo.png" alt="" />
 				</a>
 			</div>
 			<div class="header_top_right">
@@ -81,16 +81,15 @@ header("Cache-Control: max-age=2592000");
 							<span class="no_product">
 
 								<?php
-								// $check_cart = $ct->check_cart();
-								// if ($check_cart) {
-								// 	// $sum = Session::get("sum"); $fm->format_currency($sum).' '.'đ'.
-								// 	$qty = Session::get("qty");
-								// 	echo ' SL:' . $qty;
-								// } else {
-								// 	echo 'Trống';
-								// }
+								$check_cart = $ct->check_cart();
+								if ($check_cart) {
+									// $sum = Session::get("sum"); $fm->format_currency($sum).' '.'đ'.
+									$qty = Session::get("qty");
+									echo ' SL:' . $qty;
+								} else {
+									echo 'Trống';
+								}
 								?>
-								Trống
 							</span>
 						</a>
 					</div>

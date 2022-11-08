@@ -18,33 +18,43 @@ class customer
 		$this->db = new Database();
 		$this->fm = new Format();
 	}
-	public function show_customers($id)
+	public function insert_cmt()
 	{
-		$query = "SELECT * FROM tbl_customer WHERE id='$id'";
-		$result = $this->db->select($query);
-		return $result;
-	}
-	public function update_customers($data, $id)
-	{
-		$name = mysqli_real_escape_string($this->db->link, $data['name']);
-		$email = mysqli_real_escape_string($this->db->link, $data['email']);
-		$address = mysqli_real_escape_string($this->db->link, $data['address']);
-		$phone = mysqli_real_escape_string($this->db->link, $data['phone']);
-
-		if ($name == "" || $email == "" || $address == "" || $phone == "") {
-			$alert = "<span class='error'>Không thể bỏ trống</span>";
+		$product_id = $_POST['product_id_cmt'];
+		$cmtName = $_POST['cmtName'];
+		$cmt = $_POST['cmt'];
+		if ($cmtName == '' || $cmt == '') {
+			$alert = "<span class='error'>Điền thông tin</span>";
 			return $alert;
 		} else {
-			$query = "UPDATE tbl_customer SET name='$name',email='$email',address='$address',phone='$phone' WHERE id ='$id'";
+			$query = "INSERT INTO tbl_comments(cmtName,cmt,product_id) VALUES('$cmtName','$cmt','$product_id')";
 			$result = $this->db->insert($query);
 			if ($result) {
-				$alert = "<span class='success'>Cập nhật thông tin thành công</span>";
+				$alert = "<span class='success'>Bình luận đã gửi</span>";
 				return $alert;
 			} else {
-				$alert = "<span class='error'>Cập nhật không thành công</span>";
+				$alert = "<span class='error'>Bình luận không thành công</span>";
 				return $alert;
 			}
 		}
+	}
+	public function del_comment($id)
+	{
+		$query = "DELETE FROM tbl_comments where cmtId = '$id'";
+		$result = $this->db->delete($query);
+		if ($result) {
+			$alert = "<span class='success'>Xóa bình luận thành công</span>";
+			return $alert;
+		} else {
+			$alert = "<span class='error'>Xóa bình luận không thành công</span>";
+			return $alert;
+		}
+	}
+	public function show_comment()
+	{
+		$query = "SELECT * FROM tbl_comments order by cmtId desc";
+		$result = $this->db->select($query);
+		return $result;
 	}
 	public function insert_customers($data)
 	{
@@ -54,7 +64,7 @@ class customer
 		$phone = mysqli_real_escape_string($this->db->link, $data['phone']);
 		$password = mysqli_real_escape_string($this->db->link, md5($data['password']));
 		if ($name == "" || $email == "" || $address == "" || $phone == "" || $password == "") {
-			$alert = "<span class='error'>Fields must be not empty</span>";
+			$alert = "<span class='error'>Hãy điền đầy đủ thông tin</span>";
 			return $alert;
 		} else {
 			$check_email = "SELECT * FROM tbl_customer WHERE email='$email' LIMIT 1";
@@ -99,6 +109,34 @@ class customer
 			}
 		}
 	}
+	public function show_customers($id)
+	{
+		$query = "SELECT * FROM tbl_customer WHERE id='$id'";
+		$result = $this->db->select($query);
+		return $result;
+	}
+	public function update_customers($data, $id)
+	{
+		$name = mysqli_real_escape_string($this->db->link, $data['name']);
+		$email = mysqli_real_escape_string($this->db->link, $data['email']);
+		$address = mysqli_real_escape_string($this->db->link, $data['address']);
+		$phone = mysqli_real_escape_string($this->db->link, $data['phone']);
+
+		if ($name == "" || $email == "" || $address == "" || $phone == "") {
+			$alert = "<span class='error'>Không thể bỏ trống</span>";
+			return $alert;
+		} else {
+			$query = "UPDATE tbl_customer SET name='$name',email='$email',address='$address',phone='$phone' WHERE id ='$id'";
+			$result = $this->db->insert($query);
+			if ($result) {
+				$alert = "<span class='success'>Cập nhật thông tin thành công</span>";
+				return $alert;
+			} else {
+				$alert = "<span class='error'>Cập nhật không thành công</span>";
+				return $alert;
+			}
+		}
+	}
 	public function change_pass($id, $oldpass, $newpass)
 	{
 		$oldpass =  mysqli_real_escape_string($this->db->link, md5($oldpass));
@@ -121,6 +159,5 @@ class customer
 			return $alert;
 		}
 	}
-	
 }
 ?>

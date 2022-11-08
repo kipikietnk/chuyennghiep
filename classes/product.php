@@ -19,30 +19,10 @@ class product
 		$this->db = new Database();
 		$this->fm = new Format();
 	}
-	public function show_product()
+	public function search_product($tukhoa)
 	{
-		// $query = "
-
-		// SELECT p.*,c.catName, b.brandName
-
-		// FROM tbl_product as p,tbl_category as c, tbl_brand as b where p.catId = c.catId 
-
-		// AND p.brandId = b.brandId 
-
-		// order by p.productId desc";
-
-		$query = "
-
-			SELECT tbl_product.*, tbl_category.catName, tbl_brand.brandName 
-
-			FROM tbl_product INNER JOIN tbl_category ON tbl_product.catId = tbl_category.catId 
-
-			INNER JOIN tbl_brand ON tbl_product.brandId = tbl_brand.brandId 
-
-			order by tbl_product.productId desc";
-
-		// $query = "SELECT * FROM tbl_product order by productId desc";
-
+		$tukhoa = $this->fm->validation($tukhoa);
+		$query = "SELECT * FROM tbl_product WHERE productName LIKE '%$tukhoa%'";
 		$result = $this->db->select($query);
 		return $result;
 	}
@@ -84,7 +64,112 @@ class product
 			}
 		}
 	}
-	
+	public function insert_slider($data, $files)
+	{
+		$sliderName = mysqli_real_escape_string($this->db->link, $data['sliderName']);
+		$type = mysqli_real_escape_string($this->db->link, $data['type']);
+
+		//Kiem tra hình ảnh và lấy hình ảnh cho vào folder upload
+		$permited  = array('jpg', 'jpeg', 'png', 'gif');
+
+		$file_name = $_FILES['image']['name'];
+		$file_size = $_FILES['image']['size'];
+		$file_temp = $_FILES['image']['tmp_name'];
+
+		$div = explode('.', $file_name);
+		$file_ext = strtolower(end($div));
+		// $file_current = strtolower(current($div));
+		$unique_image = substr(md5(time()), 0, 10) . '.' . $file_ext;
+		$uploaded_image = "uploads/" . $unique_image;
+
+
+		if ($sliderName == "" || $type == "") {
+			$alert = "<span class='error'>Điền đủ thông tin.</span>";
+			return $alert;
+		} else {
+			if (!empty($file_name)) {
+				//Nếu người dùng chọn ảnh
+				if ($file_size > 2048000) {
+
+					$alert = "<span class='success'>Ảnh phải nhỏ hơn 2MB!</span>";
+					return $alert;
+				} elseif (in_array($file_ext, $permited) === false) {
+					// echo "<span class='error'>You can upload only:-".implode(', ', $permited)."</span>";	
+					$alert = "<span class='success'>Chỉ được chọn :-" . implode(', ', $permited) . "</span>";
+					return $alert;
+				}
+				move_uploaded_file($file_temp, $uploaded_image);
+				$query = "INSERT INTO tbl_slider(sliderName,type,slider_image) VALUES('$sliderName','$type','$unique_image')";
+				$result = $this->db->insert($query);
+				if ($result) {
+					$alert = "<span class='success'>Thêm slider thành công</span>";
+					return $alert;
+				} else {
+					$alert = "<span class='error'>Thêm silder không thành công</span>";
+					return $alert;
+				}
+			}
+		}
+	}
+	public function show_slider()
+	{
+		$query = "SELECT * FROM tbl_slider where type='1' order by sliderId desc";
+		$result = $this->db->select($query);
+		return $result;
+	}
+	public function show_slider_list()
+	{
+		$query = "SELECT * FROM tbl_slider order by sliderId desc";
+		$result = $this->db->select($query);
+		return $result;
+	}
+	public function show_product()
+	{
+		// $query = "
+
+		// SELECT p.*,c.catName, b.brandName
+
+		// FROM tbl_product as p,tbl_category as c, tbl_brand as b where p.catId = c.catId 
+
+		// AND p.brandId = b.brandId 
+
+		// order by p.productId desc";
+
+		$query = "
+
+			SELECT tbl_product.*, tbl_category.catName, tbl_brand.brandName 
+
+			FROM tbl_product INNER JOIN tbl_category ON tbl_product.catId = tbl_category.catId 
+
+			INNER JOIN tbl_brand ON tbl_product.brandId = tbl_brand.brandId 
+
+			order by tbl_product.productId desc";
+
+		// $query = "SELECT * FROM tbl_product order by productId desc";
+
+		$result = $this->db->select($query);
+		return $result;
+	}
+	public function update_type_slider($id, $type)
+	{
+
+		$type = mysqli_real_escape_string($this->db->link, $type);
+		$query = "UPDATE tbl_slider SET type = '$type' where sliderId='$id'";
+		$result = $this->db->update($query);
+		return $result;
+	}
+	public function del_slider($id)
+	{
+		$query = "DELETE FROM tbl_slider where sliderId = '$id'";
+		$result = $this->db->delete($query);
+		if ($result) {
+			$alert = "<span class='success'>Slider Deleted Successfully</span>";
+			return $alert;
+		} else {
+			$alert = "<span class='error'>Slider Deleted Not Success</span>";
+			return $alert;
+		}
+	}
 	public function update_product($data, $files, $id)
 	{
 
@@ -176,12 +261,14 @@ class product
 		$result = $this->db->select($query);
 		return $result;
 	}
+	//END BACKEND 
 	public function getproduct_feathered()
 	{
 		$query = "SELECT * FROM tbl_product where type = '0' order by Rand() LIMIT 4 ";
 		$result = $this->db->select($query);
 		return $result;
 	}
+
 	public function getproduct_new()
 	{
 		$sp_tungtrang = 4;
@@ -198,14 +285,6 @@ class product
 	public function get_all_product()
 	{
 		$query = "SELECT * FROM tbl_product";
-		$result = $this->db->select($query);
-		
-		return $result;
-	}
-	public function search_product($tukhoa)
-	{
-		$tukhoa = $this->fm->validation($tukhoa);
-		$query = "SELECT * FROM tbl_product WHERE productName LIKE '%$tukhoa%'";
 		$result = $this->db->select($query);
 		return $result;
 	}
