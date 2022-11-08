@@ -30,7 +30,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['save'])) {
 			<form action="" method="post">
 				<table class="tblone">
 					<tr>
-
 						<?php
 						if (isset($UpdateCustomers)) {
 							echo '<td colspan="3">' . $UpdateCustomers . '</td>';
