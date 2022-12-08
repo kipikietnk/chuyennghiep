@@ -51,7 +51,6 @@ class category
 		$catName = $this->fm->validation($catName);
 		$catName = mysqli_real_escape_string($this->db->link, $catName);
 		$id = mysqli_real_escape_string($this->db->link, $id);
-
 		if (empty($catName)) {
 			$alert = "<span class='error'>Nhập tên danh mục!</span>";
 			return $alert;
