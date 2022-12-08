@@ -26,7 +26,7 @@ if (isset($_GET['confirmid'])) {
 	<div class="content">
 		<div class="cartoption">
 			<div class="cartpage">
-				<h2>Thôn tin đơn hàng của bạn</h2>
+				<h2>Thông tin đơn hàng của bạn</h2>
 
 				<table class="tblone">
 					<tr>
