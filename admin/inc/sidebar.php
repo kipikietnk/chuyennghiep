@@ -36,12 +36,15 @@
                         <li><a href="commentlist.php">Liệt kê bình luận</a> </li>
                     </ul>
                 </li>
-               <li><a class="menuitem">Quản trị viên</a>
+                <?php
+                    if(Session::get('level') == 0)
+                    echo '<li><a class="menuitem">Quản trị viên</a>
                                 <ul class="submenu">
                                 <li><a href="adminadd.php">Thêm quản trị viên</a> </li>
                                     <li><a href="adminlist.php">Danh sách QTV</a> </li>
                                 </ul>
-                            </li>
+                            </li>'
+                ?>
                 
 
 

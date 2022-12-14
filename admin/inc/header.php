@@ -93,7 +93,7 @@ header("Cache-Control: max-age=2592000");
                 <li class="ic-dashboard"><a href="index.php"><span>Trang chủ</span></a> </li>
                 <li class="ic-typography"><a href="changepassword.php"><span>Bảo mật</span></a></li>';
                 <li class="ic-grid-tables"><a href="inbox.php"><span>Đơn hàng</span></a></li>
-                <li class="ic-charts"><a href="../../../web/"><span>Đến Shop</span></a></li>
+                <li class="ic-charts"><a href="../../../chuyennghiep/"><span>Đến Shop</span></a></li>
             </ul>
         </div>
         <div class="clear">
